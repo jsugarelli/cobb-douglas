@@ -11,18 +11,18 @@
 </head>
 <body>
   <header class="topbar">
-    <label class="simulation-picker"><span data-i18n="simulationLabel">Simulation</span><select id="simulation" data-i18n-label="simulationLabel" aria-label="Simulation"><option value="indifference" data-i18n="simulationIndifference">Vom Nutzen zur Indifferenzkurve</option><option value="marginal" data-i18n="simulationMarginal">Grenznutzen</option></select></label>
+    <label class="simulation-picker"><span data-i18n="simulationLabel">Simulation</span><select id="simulation" data-i18n-label="simulationLabel" aria-label="Simulation"><option value="indifference" data-i18n="simulationIndifference">Von der Nutzenfunktion zur Indifferenzkurve</option><option value="marginal" data-i18n="simulationMarginal">Grenznutzen</option><option value="substitution" data-i18n="simulationSubstitution">Grenzrate der technischen Substitution</option></select></label>
     <label class="language"><span data-i18n="language">Sprache</span><select id="language" aria-label="Sprache / Language"><option value="de">Deutsch</option><option value="en">English</option></select></label>
   </header>
   <main>
     <section class="intro">
       <p class="eyebrow" data-i18n="eyebrow">MIKROÖKONOMIK · HAUSHALTSTHEORIE</p>
-      <h1 id="simulation-title">Vom Nutzen zur Indifferenzkurve.</h1>
+      <h1 id="simulation-title">Von der Nutzenfunktion zur Indifferenzkurve.</h1>
     </section>
     <div id="indifference-view">
     <section class="workspace" aria-label="Simulation">
       <div class="main-panel">
-        <div class="panel-heading"><div><p class="eyebrow" data-i18n="surfaceKicker">01 / DIE NUTZENFLÄCHE</p><h2>U(x₁, x₂) = x₁⁰·⁷ · x₂⁰·³</h2></div></div>
+        <div class="panel-heading"><div><p class="eyebrow" data-i18n="surfaceKicker">01 / DIE NUTZENFLÄCHE</p><h2 id="utility-function-formula">U(x₁, x₂) = x₁<sup>0,4</sup> · x₂<sup>0,6</sup></h2></div></div>
         <div class="camera-controls">
           <button id="rotate-left" class="subtle arrow" data-i18n-label="rotateLeft" aria-label="Nach links drehen">←</button>
           <button id="level-view" class="subtle" data-i18n="levelView">Waagerecht ausrichten</button>
@@ -31,29 +31,29 @@
         </div>
         <div id="surface-plot" role="img" aria-label="3D-Nutzenfläche"></div>
         <p class="plot-hint" data-i18n="hint">Ziehen zum Drehen · Scrollen zum Zoomen</p>
-        <div class="legend"><span><i class="swatch surface"></i><span data-i18n="legendSurface">Nutzenfläche</span></span><span><i class="swatch cut"></i><span data-i18n="legendCut">Schnittkurve bei U = ū</span></span><span><i class="swatch projection"></i><span data-i18n="legendProjection">Projektion auf U = 0</span></span></div>
+        <div class="legend"><span><i class="swatch surface"></i><span data-i18n="legendSurface">Nutzenfläche</span></span><span><i class="swatch cut"></i><span data-i18n="legendCut">Schnittkurve bei U = Ū</span></span><span><i class="swatch projection"></i><span data-i18n="legendProjection">Projektion auf U = 0</span></span></div>
       </div>
       <aside class="side-panel">
-        <section class="control-section"><p class="eyebrow" data-i18n="levelKicker">02 / DAS NUTZENNIVEAU</p><div class="level-heading"><label for="utility-level" data-i18n="level">Schnitthöhe ū</label><output for="utility-level" id="level-value">4,0</output></div><input id="utility-level" type="range" min="0.5" max="8" step="0.1" value="4" aria-describedby="level-help"><div class="range-labels"><span id="min-value">0,5</span><span id="max-value">8,0</span></div><p id="level-help" data-i18n="levelHelp">Verschiebe die Ebene. Die rote Schnittkurve verbindet alle Güterbündel mit diesem Nutzen.</p>
+        <section class="control-section"><p class="eyebrow" data-i18n="levelKicker">02 / DAS NUTZENNIVEAU</p><div class="level-heading"><label for="utility-level" data-i18n="level">Schnitthöhe Ū</label><output for="utility-level" id="level-value">4,0</output></div><input id="utility-level" type="range" min="0.5" max="8" step="0.1" value="4" aria-describedby="level-help"><div class="range-labels"><span id="min-value">0,5</span><span id="max-value">8,0</span></div><p id="level-help" data-i18n="levelHelp">Verschiebe die Ebene. Die rote Schnittkurve verbindet alle Güterbündel mit diesem Nutzen.</p>
           <div class="transparency-control">
             <div class="level-heading"><label for="transparency" data-i18n="transparency">Transparenz der Nutzenfläche</label><output for="transparency" id="transparency-value">20 %</output></div>
             <input id="transparency" type="range" min="0" max="100" step="1" value="20">
             <div class="range-labels"><span data-i18n="opaque">Deckend</span><span data-i18n="transparent">Transparent</span></div>
           </div>
         </section>
-        <section class="projection-section"><p class="eyebrow" data-i18n="projectionKicker">03 / DIE INDIFFERENZKURVE</p><h2 data-i18n="projectionTitle">Der Blick auf die Güterebene</h2><div id="projection-plot" role="img" aria-label="Indifferenzkurve in der Güterebene"></div><p class="formula">x₂ = (ū / x₁⁰·⁷)<sup>1 / 0,3</sup></p><p data-i18n="projectionHelp">Die Projektion übernimmt x₁ und x₂ aus der Schnittkurve; nur die Höhe wird null.</p></section>
+        <section class="projection-section"><p class="eyebrow" data-i18n="projectionKicker">03 / DIE INDIFFERENZKURVE</p><h2 data-i18n="projectionTitle">Der Blick auf die Güterebene</h2><div id="projection-plot" role="img" aria-label="Indifferenzkurve in der Güterebene"></div><p class="formula">x₂ = (Ū / x₁<sup>0,4</sup>)<sup>1 / 0,6</sup></p><p data-i18n="projectionHelp">Die Projektion übernimmt x₁ und x₂ aus der Schnittkurve; nur die Höhe wird null.</p></section>
       </aside>
     </section>
     <section class="insight" aria-live="polite"><span class="insight-icon" aria-hidden="true">↳</span><div><h2 data-i18n="insightTitle">Gleicher Nutzen. Unterschiedliche Güterbündel.</h2><p id="insight-text"></p></div></section>
     </div>
     <section id="marginal-view" hidden>
       <nav class="step-nav" data-i18n-label="muSteps">
-        <button id="mu-step-slice" class="step-button" aria-current="step"><span class="step-number">1</span><span data-i18n="muStepSlice">Die Nutzenfläche schneiden</span></button>
+        <button id="mu-step-slice" class="step-button" aria-current="step"><span class="step-number">1</span><span data-i18n="muStepSlice">Nutzenfunktion mit einem Gut</span></button>
         <span class="step-connector" aria-hidden="true">→</span>
-        <button id="mu-step-slope" class="step-button"><span class="step-number">2</span><span data-i18n="muStepSlope">Von der Sekante zur Tangente</span></button>
+        <button id="mu-step-slope" class="step-button"><span class="step-number">2</span><span data-i18n="muStepSlope">Grenznutzen als Steigung</span></button>
       </nav>
       <div id="mu-slice-panel" class="mu-panel">
-        <div class="mu-section-header"><div><p class="eyebrow" data-i18n="muSliceKicker">01 / EIN GUT BLEIBT KONSTANT</p><h2 data-i18n="muSliceHeading">Aus einer Fläche wird eine Kurve.</h2></div><p data-i18n="muSliceIntro">Halte die Menge eines Gutes fest. Der senkrechte Schnitt zeigt, wie sich der Nutzen verändert, wenn nur die Menge des anderen Gutes steigt.</p></div>
+        <div class="mu-section-header"><div><p class="eyebrow" data-i18n="muSliceKicker">01 / EIN GUT BLEIBT KONSTANT</p><h2 data-i18n="muSliceHeading">Aus einer Nutzenfunktion mit zwei Gütern wird eine mit nur einem Gut</h2></div><p data-i18n="muSliceIntro">Halte die Menge eines Gutes fest. Der senkrechte Schnitt zeigt, wie sich der Nutzen verändert, wenn nur die Menge des anderen Gutes steigt.</p></div>
         <div class="mu-slice-controls">
           <label><span data-i18n="muVarying">Welches Gut wird verändert?</span><select id="mu-variable"><option value="1" data-i18n="muVary1">Gut 1 · x₁</option><option value="2" data-i18n="muVary2">Gut 2 · x₂</option></select></label>
           <div class="mu-fixed-control"><div class="mu-slider-label"><label id="mu-fixed-label" for="mu-fixed"></label><output id="mu-fixed-value" for="mu-fixed"></output></div><input id="mu-fixed" type="range" min="0.5" max="9.5" step="0.1" value="5"></div>
@@ -62,17 +62,41 @@
         <div class="mu-bottom-row"><p data-i18n="muSliceNote">Ein senkrechter Schnitt hält eine Gütermenge konstant. Entlang der roten Kurve verändert sich der Nutzen.</p><button id="mu-next" class="primary" data-i18n="muNext">Weiter: die Steigung untersuchen →</button></div>
       </div>
       <div id="mu-slope-panel" class="mu-panel" hidden>
-        <div class="mu-section-header"><div><p class="eyebrow" data-i18n="muSlopeKicker">02 / ZWEI PUNKTE RÜCKEN ZUSAMMEN</p><h2 data-i18n="muSlopeHeading">Die Sekante wird zur Tangente.</h2></div><p data-i18n="muSlopeIntro">Das Steigungsdreieck misst den durchschnittlichen Nutzenzuwachs zwischen A und B. Lässt du B auf A zuwandern, erhältst du die Steigung genau im Punkt A: den Grenznutzen.</p></div>
+        <div class="mu-section-header"><div><p class="eyebrow" data-i18n="muSlopeKicker">02 / ZWEI PUNKTE RÜCKEN ZUSAMMEN</p><h2 data-i18n="muSlopeHeading">Von der Sekantensteigung zur Ableitung</h2></div><p data-i18n="muSlopeIntro">Das Steigungsdreieck misst den durchschnittlichen Nutzenzuwachs zwischen A und B. Lässt Du B auf A zuwandern, erhältst Du die Steigung genau im Punkt A: den Grenznutzen.</p></div>
         <p id="mu-slope-context" class="mu-equation"></p>
-        <div class="mu-slope-grid"><div class="mu-slope-graphic"><div id="mu-slope-plot" role="img" data-i18n-label="muSlopeAria"></div><div class="legend"><span><i class="swatch surface"></i><span data-i18n="muUtilityCurve">Nutzenkurve</span></span><span><i class="swatch cut"></i><span data-i18n="muSecant">Sekante</span></span><span><i class="swatch projection"></i><span data-i18n="muTangent">Tangente in A</span></span></div></div><aside class="mu-slope-controls">
+        <div class="mu-slope-grid"><div class="mu-slope-graphic"><div id="mu-slope-plot" role="img" data-i18n-label="muSlopeAria"></div><p class="plot-hint" data-i18n="muZoomNote"></p><div class="legend"><span><i class="swatch surface"></i><span data-i18n="muUtilityCurve">Nutzenkurve</span></span><span><i class="swatch cut"></i><span data-i18n="muSecant">Sekante</span></span><span><i class="swatch projection"></i><span data-i18n="muTangent">Tangente in A</span></span></div></div><aside class="mu-slope-controls">
           <div class="mu-slider-label"><label for="mu-point" id="mu-point-label"></label><output id="mu-point-value" for="mu-point"></output></div><input id="mu-point" type="range" min="0.5" max="7" step="0.1" value="3">
           <div class="mu-gap-control"><div class="mu-slider-label"><label for="mu-gap" data-i18n="muGap">Abstand der Punkte · Δx</label><output id="mu-gap-value" for="mu-gap"></output></div><input id="mu-gap" type="range" min="0" max="3" step="0.01" value="3"><div class="range-labels"><span data-i18n="muLimitEnd">0 · Tangente</span><span data-i18n="muSecantEnd">3 · Sekante</span></div></div>
           <button id="mu-animate" class="primary"></button><p class="mu-small-note" data-i18n="muAnimateHelp">Du kannst den Abstand auch selbst mit dem Regler verkleinern.</p>
           <div class="mu-point-values"><span id="mu-a-values"></span><span id="mu-b-values"></span></div>
         </aside></div>
         <div class="mu-metrics" aria-live="off"><div><span data-i18n="muRun">Änderung der Menge</span><strong id="mu-dx"></strong><small>Δx</small></div><div><span data-i18n="muRise">Änderung des Nutzens</span><strong id="mu-du"></strong><small>ΔU</small></div><div class="mu-secant-metric"><span data-i18n="muAverage">Sekantensteigung</span><strong id="mu-secant-value"></strong><small>ΔU / Δx</small></div><div><span data-i18n="muMarginal">Grenznutzen in A</span><strong id="mu-derivative-value"></strong><small id="mu-derivative-symbol"></small></div></div>
-        <div id="mu-limit-box" class="mu-limit-box" aria-live="polite"><h3 id="mu-limit-heading"></h3><p id="mu-limit-text"></p><p id="mu-derivative-formula" class="mu-equation"></p></div>
+        <div id="mu-limit-box" class="mu-limit-box" aria-live="polite"><h3 id="mu-limit-heading"></h3><p id="mu-limit-text"></p><p id="mu-derivative-formula" class="mu-equation"></p><div class="mu-substitution"><p data-i18n="muSubstitutionHelp"></p><p id="mu-derivative-substitution" class="mu-equation"></p></div></div>
         <div class="mu-bottom-row"><button id="mu-back" class="subtle" data-i18n="muBack">← Zurück zum Schnitt</button><p data-i18n="muDiminishing">Verschiebe A nach rechts: Bei dieser Nutzenfunktion steigt der Nutzen weiter, aber der Grenznutzen sinkt.</p></div>
+      </div>
+    </section>
+    <section id="substitution-view" hidden>
+      <nav class="step-nav" data-i18n-label="mrsSteps">
+        <button id="mrs-step-exchange" class="step-button" aria-current="step"><span class="step-number">1</span><span data-i18n="mrsStepExchange"></span></button>
+        <span class="step-connector" aria-hidden="true">→</span>
+        <button id="mrs-step-limit" class="step-button"><span class="step-number">2</span><span data-i18n="mrsStepLimit"></span></button>
+      </nav>
+      <div class="mu-panel">
+        <div class="mu-section-header"><div><p class="eyebrow" id="mrs-kicker"></p><h2 id="mrs-heading"></h2></div><p id="mrs-intro"></p></div>
+        <p id="mrs-context" class="mu-equation"></p>
+        <div class="mu-slope-grid"><div class="mu-slope-graphic"><div id="mrs-plot" role="img" data-i18n-label="mrsPlotAria"></div><p id="mrs-plot-note" class="plot-hint"></p><div class="legend"><span><i class="swatch cut"></i><span data-i18n="mrsOriginalCurve"></span></span><span><i class="swatch surface"></i><span id="mrs-blue-legend"></span></span><span><i class="swatch projection"></i><span id="mrs-grey-legend"></span></span></div></div>
+          <aside class="mu-slope-controls">
+            <div class="mu-slider-label"><label for="mrs-point" data-i18n="mrsPoint"></label><output id="mrs-point-value" for="mrs-point"></output></div><input id="mrs-point" type="range" min="1.5" max="7" step="0.1" value="3">
+            <div class="mu-gap-control"><div class="mu-slider-label"><label for="mrs-gap" data-i18n="mrsGap"></label><output id="mrs-gap-value" for="mrs-gap"></output></div><input id="mrs-gap" type="range" min="0" max="3" step="0.01" value="3"><div class="range-labels"><span id="mrs-gap-min"></span><span id="mrs-gap-max"></span></div></div>
+            <div id="mrs-compensation-control" class="mu-gap-control"><div class="mu-slider-label"><label for="mrs-compensation" data-i18n="mrsCompensation"></label><output id="mrs-compensation-value" for="mrs-compensation"></output></div><input id="mrs-compensation" type="range" min="0" max="100" step="1" value="0"></div>
+            <button id="mrs-animate" class="primary"></button>
+            <p id="mrs-control-help" class="mu-small-note"></p>
+            <div class="mu-point-values"><span id="mrs-a-values"></span><span id="mrs-b-values"></span></div>
+          </aside>
+        </div>
+        <div class="mu-metrics mrs-metrics" aria-live="off"><div><span id="mrs-metric-label-1"></span><strong id="mrs-metric-value-1"></strong><small id="mrs-metric-symbol-1"></small></div><div><span id="mrs-metric-label-2"></span><strong id="mrs-metric-value-2"></strong><small id="mrs-metric-symbol-2"></small></div><div class="mu-secant-metric"><span id="mrs-metric-label-3"></span><strong id="mrs-metric-value-3"></strong><small id="mrs-metric-symbol-3"></small></div><div><span id="mrs-metric-label-4"></span><strong id="mrs-metric-value-4"></strong><small id="mrs-metric-symbol-4"></small></div></div>
+        <div id="mrs-explanation" class="mu-limit-box" aria-live="polite"><h3 id="mrs-explanation-heading"></h3><p id="mrs-explanation-text"></p><p id="mrs-formula" class="mu-equation"></p><div id="mrs-substitution-details" class="mu-substitution" hidden><p id="mrs-substitution-label"></p><p id="mrs-substitution" class="mu-equation"></p></div></div>
+        <div class="mu-bottom-row"><button id="mrs-next" class="primary"></button><p id="mrs-bottom-note"></p></div>
       </div>
     </section>
     <footer><span data-i18n="footer">Tourismusökonomie 1 · Grundlagen der Volkswirtschaftslehre</span><span data-i18n="domainNote">Gezeigter Ausschnitt: 0 ≤ x₁, x₂ ≤ 10. Die Kurven setzen sich außerhalb fort.</span></footer>

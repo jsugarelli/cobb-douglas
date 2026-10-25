@@ -1,6 +1,7 @@
-import { utility, indifferenceCurve, MAX_QUANTITY } from './math.js';
+import { utility, indifferenceCurve, MAX_QUANTITY, ALPHA, BETA } from './math.js';
 import { levelCamera, rotateCamera } from './camera.js';
 import { createMarginalSimulation } from './marginal.js';
+import { createSubstitutionSimulation } from './substitution.js';
 
 const $ = id => document.getElementById(id);
 const slider = $('utility-level');
@@ -12,6 +13,8 @@ const config = { responsive: true, displayModeBar: false, scrollZoom: true, show
 let dictionary, lang = 'de', ready = false;
 let rendering = false, pending = false;
 let marginalSimulation;
+let substitutionSimulation;
+const simulationTitle = () => ({ indifference: 'simulationIndifference', marginal: 'simulationMarginal', substitution: 'simulationSubstitution' }[$('simulation').value]);
 const t = key => dictionary[lang][key] ?? dictionary.de[key] ?? key;
 const number = value => new Intl.NumberFormat(lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value);
 const cloneCamera = () => structuredClone(initialCamera);
@@ -89,10 +92,11 @@ async function setLanguage(value) {
   lang = value;
   languageSelect.value = lang;
   document.documentElement.lang = lang;
-  document.title = t($('simulation').value === 'marginal' ? 'simulationMarginal' : 'pageTitle');
+  document.title = t(simulationTitle());
   document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = t(element.dataset.i18n); });
-  $('simulation-title').textContent = t($('simulation').value === 'marginal' ? 'simulationMarginal' : 'title');
+  $('simulation-title').textContent = t(simulationTitle());
   if (marginalSimulation) await marginalSimulation.translate();
+  if (substitutionSimulation) await substitutionSimulation.translate();
   languageSelect.setAttribute('aria-label', t('language'));
   document.querySelectorAll('[data-i18n-label]').forEach(element => {
     element.setAttribute('aria-label', t(element.dataset.i18nLabel));
@@ -102,7 +106,8 @@ async function setLanguage(value) {
   $('projection-plot').setAttribute('aria-label', t('projectionAria'));
   $('min-value').textContent = number(Number(slider.min));
   $('max-value').textContent = number(Number(slider.max));
-  document.querySelector('.formula').innerHTML = lang === 'de' ? 'x₂ = (ū / x₁⁰·⁷)<sup>1 / 0,3</sup>' : 'x₂ = (ū / x₁⁰·⁷)<sup>1 / 0.3</sup>';
+  $('utility-function-formula').innerHTML = `U(x₁, x₂) = x₁<sup>${number(ALPHA)}</sup> · x₂<sup>${number(BETA)}</sup>`;
+  document.querySelector('.formula').innerHTML = `x₂ = (Ū / x₁<sup>${number(ALPHA)}</sup>)<sup>1 / ${number(BETA)}</sup>`;
   updateText();
   try { localStorage.setItem('cobb-douglas-language', lang); } catch { /* Optional preference storage. */ }
   if (ready) {
@@ -140,18 +145,26 @@ async function init() {
   ]);
   ready = true;
   marginalSimulation = createMarginalSimulation({ t, locale: () => lang, showError });
+  substitutionSimulation = createSubstitutionSimulation({ t, locale: () => lang, showError });
   async function selectSimulation() {
-    const isMarginal = $('simulation').value === 'marginal';
-    $('indifference-view').hidden = isMarginal;
+    const selected = $('simulation').value;
+    const isMarginal = selected === 'marginal';
+    const isSubstitution = selected === 'substitution';
+    $('indifference-view').hidden = selected !== 'indifference';
     $('marginal-view').hidden = !isMarginal;
-    $('simulation-title').textContent = t(isMarginal ? 'simulationMarginal' : 'title');
-    document.title = `${t(isMarginal ? 'simulationMarginal' : 'simulationIndifference')} · ${t('eyebrow')}`;
-    history.replaceState(null, '', isMarginal ? '#marginal-utility' : '#indifference');
+    $('substitution-view').hidden = !isSubstitution;
+    $('simulation-title').textContent = t(simulationTitle());
+    document.title = `${t(simulationTitle())} · ${t('eyebrow')}`;
+    history.replaceState(null, '', isMarginal ? '#marginal-utility' : isSubstitution ? '#substitution' : '#indifference');
+    if (!isMarginal) marginalSimulation.pause();
+    if (!isSubstitution) substitutionSimulation.pause();
     if (isMarginal) await marginalSimulation.show();
-    else { marginalSimulation.pause(); await Promise.all([Plotly.Plots.resize('surface-plot'), Plotly.Plots.resize('projection-plot')]); }
+    else if (isSubstitution) await substitutionSimulation.show();
+    else await Promise.all([Plotly.Plots.resize('surface-plot'), Plotly.Plots.resize('projection-plot')]);
   }
   $('simulation').addEventListener('change', () => selectSimulation().catch(showError));
   if (location.hash === '#marginal-utility') { $('simulation').value = 'marginal'; await selectSimulation(); }
+  if (location.hash === '#substitution') { $('simulation').value = 'substitution'; await selectSimulation(); }
   slider.disabled = false;
   transparency.disabled = false;
   document.querySelectorAll('.camera-controls button').forEach(button => { button.disabled = false; });

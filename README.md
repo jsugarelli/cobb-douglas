@@ -27,16 +27,16 @@ Alle Ressourcen nutzen relative Pfade und funktionieren auch im Unterpfad eines 
 
 ## Bedienung und Fachliches
 
-Die Titelzeile bietet zwei Simulationen. Sprache und Simulationsauswahl gelten für die gesamte Anwendung. Direktlinks: `#indifference` und `#marginal-utility`.
+Die Titelzeile bietet drei Simulationen. Sprache und Simulationsauswahl gelten für die gesamte Anwendung. Direktlinks: `#indifference`, `#marginal-utility` und `#substitution`.
 
-### Vom Nutzen zur Indifferenzkurve
+### Von der Nutzenfunktion zur Indifferenzkurve
 
-- Feste Nutzenfunktion: U(x₁,x₂) = x₁^0,7 · x₂^0,3.
-- Ein Regler verändert das Nutzenniveau ū zwischen 0,5 und 8.
-- Rot: Schnitt mit der horizontalen Ebene U = ū.
+- Feste Nutzenfunktion: U(x₁,x₂) = x₁^0,4 · x₂^0,6.
+- Ein Regler verändert das Nutzenniveau Ū zwischen 0,5 und 8.
+- Rot: Schnitt mit der horizontalen Ebene U = Ū.
 - Grau: senkrechte Projektion dieser Schnittkurve auf U = 0, zusätzlich als zweidimensionale Indifferenzkurve rechts.
 - Gepunktete Verbindungslinien verdeutlichen die Projektion.
-- Die Kurve folgt exakt x₂ = (ū / x₁^0,7)^(1/0,3). Sie wird nur innerhalb des sichtbaren Mengenbereichs [0,10]² dargestellt.
+- Die Kurve folgt exakt x₂ = (Ū / x₁^0,4)^(1/0,6). Sie wird nur innerhalb des sichtbaren Mengenbereichs [0,10]² dargestellt.
 - Ansicht durch Ziehen drehen, durch Scrollen zoomen; die Schaltfläche setzt die Kamera zurück. Die Kamera bleibt beim Verändern des Nutzenniveaus erhalten.
 - Sprache oben rechts wechseln; die Auswahl wird, wenn möglich, lokal gespeichert. Alle übersetzbaren Erklärungstexte stehen gemeinsam in `translations.json`.
 
@@ -44,10 +44,20 @@ Nutzenwerte stellen eine ordinale Rangfolge dar. Indifferenz zwischen Bündeln b
 
 ### Grenznutzen
 
-1. **Die Nutzenfläche schneiden:** Wähle das variable Gut und halte die andere Menge zwischen 0,5 und 9,5 konstant. Die senkrechte Schnittebene und die rote Schnittkurve zeigen die Beschränkung von U(x₁,x₂) auf eine Variable. Daneben erscheint dieselbe Kurve in der Ebene (variable Gütermenge, Nutzen).
-2. **Von der Sekante zur Tangente:** Wähle den Punkt A zwischen 0,5 und 7 und den Abstand Δx zwischen 0 und 3. B liegt bei A + Δx. Sekante, Steigungsdreieck und Zahlen zeigen ΔU / Δx, eine gestrichelte Tangente zeigt die Ableitung in A zum Vergleich. Die Animation führt B in 5,5 Sekunden zu A und lässt sich pausieren und wiederholen. Bei Δx = 0 wird kein Quotient berechnet: Stattdessen wird die analytische Ableitung als Grenzwert dargestellt.
+1. **Nutzenfunktion mit einem Gut:** Wähle das variable Gut und halte die andere Menge zwischen 0,5 und 9,5 konstant. Die senkrechte Schnittebene und die rote Schnittkurve zeigen die Beschränkung von U(x₁,x₂) auf eine Variable. Daneben erscheint dieselbe Kurve in der Ebene (variable Gütermenge, Nutzen).
+2. **Grenznutzen als Steigung:** Wähle den Punkt A zwischen 0,5 und 7 und den Abstand Δx zwischen 0 und 3. B liegt bei A + Δx. Sekante, Steigungsdreieck und Zahlen zeigen ΔU / Δx, eine gestrichelte Tangente zeigt die Ableitung in A zum Vergleich. Die Animation führt B in 5,5 Sekunden zu A und lässt sich pausieren und wiederholen. Bei Δx = 0 wird kein Quotient berechnet: Stattdessen wird die analytische Ableitung als Grenzwert dargestellt.
 
-Für Gut 1 gilt MU₁ = 0,7 · x₁^(-0,3) · x₂^0,3; für Gut 2 gilt MU₂ = 0,3 · x₁^0,7 · x₂^(-0,7). Der variable Punkt bleibt strikt positiv, damit die Ableitung endlich bleibt; A + Δx liegt stets im sichtbaren Bereich bis 10. Der Mittelpunkt A lässt sich bei Δx = 0 verschieben, um den abnehmenden Grenznutzen zu erkunden. Die erste Simulation und ihre eingestellten Werte bleiben beim Umschalten erhalten.
+Für Gut 1 gilt MU₁ = 0,4 · x₁^(-0,6) · x₂^0,6; für Gut 2 gilt MU₂ = 0,6 · x₁^0,4 · x₂^(-0,4). Der variable Punkt bleibt strikt positiv, damit die Ableitung endlich bleibt; A + Δx liegt stets im sichtbaren Bereich bis 10. Der Mittelpunkt A lässt sich bei Δx = 0 verschieben, um den abnehmenden Grenznutzen zu erkunden. Die erste Simulation und ihre eingestellten Werte bleiben beim Umschalten erhalten.
+
+
+
+### Grenzrate der technischen Substitution (Güterbeispiel: MRS)
+
+Die dritte Simulation verwendet dieselbe Nutzenfunktion U(x₁,x₂) = x₁^0,4 · x₂^0,6. Das ursprüngliche Nutzenniveau wird durch A = (3,5) festgelegt; A kann entlang dieser Indifferenzkurve verschoben werden.
+
+1. **Nutzenanstieg ausgleichen:** A → C erhöht x₁ bei unverändertem x₂. Ein zusätzlicher Regler oder die Animation verringert x₂ bis zum kompensierten Bündel B. Der Punkt D zeigt den aktuellen Ausgleich. Die Anzeigen vergleichen U(A), U(C), U(D) und den verbleibenden Nutzenanstieg. Bei vollständigem Ausgleich gilt exakt U(A) = U(B).
+2. **Austauschdreieck verkleinern:** Der Abstand Δx₁ wird kleiner; B wird stets exakt auf derselben Indifferenzkurve berechnet. Das positive durchschnittliche Austauschverhältnis −Δx₂/Δx₁ nähert sich MRS = MU₁/MU₂ = (0,4/0,6)·(x₂/x₁). Die negative Steigung der Indifferenzkurve ist −MRS. Bei Δx₁=0 erscheint die Tangente; der undefinierte Quotient 0/0 wird nicht ausgewertet. Die Achsen bleiben während der Annäherung fest.
+
 
 ## Sprachen erweitern
 
@@ -71,3 +81,5 @@ CI-Primärfarbe: #DA002A; Sekundärfarben: Grau. Waagerecht ausrichten stellt ei
 
 Die Transparenz der Nutzenfläche kann in der ersten Simulation separat von 0 % (deckend) bis 100 % (unsichtbar) eingestellt werden; voreingestellt sind 20 %. Schnittkurve, Schnittebene und Projektion bleiben dabei erhalten.
 
+
+Das Steigungsdiagramm zeigt einen vergrößerten Ausschnitt um A und den maximal möglichen Punkt B. Die x-Achse umfasst höchstens 4,5 Mengeneinheiten, die y-Achse passt sich an Nutzenkurve und Tangente an. Beide Achsen bleiben während des Verkleinerns von Δx unverändert; beim Verschieben von A oder Ändern der konstanten Menge wird der Ausschnitt neu berechnet.

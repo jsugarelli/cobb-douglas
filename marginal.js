@@ -1,5 +1,5 @@
-import { utility } from './math.js';
-import { sectionUtility, slopeValues } from './marginal-math.js';
+import { utility, ALPHA, BETA } from './math.js';
+import { sectionUtility, slopeValues, slopePlotRange } from './marginal-math.js';
 
 export function createMarginalSimulation({ t, locale, showError }) {
   const $ = id => document.getElementById(id);
@@ -16,11 +16,12 @@ export function createMarginalSimulation({ t, locale, showError }) {
   const fixed = () => Number($('mu-fixed').value);
   const symbol = () => variable() === 1 ? 'x₁' : 'x₂';
   const other = () => variable() === 1 ? 'x₂' : 'x₁';
-  const exponent = () => variable() === 1 ? '0.7' : '0.3';
-  const localExponent = value => locale() === 'de' ? value.replace('.', ',') : value;
+  const exponent = () => variable() === 1 ? ALPHA : BETA;
+  const otherExponent = () => variable() === 1 ? BETA : ALPHA;
+  const localExponent = value => format(Number(value), 1);
   const sectionFormula = () => variable() === 1
-    ? `U(x₁, x₂ = ${format(fixed(), 1)}) = x₁<sup>${localExponent('0.7')}</sup> · ${format(fixed(), 1)}<sup>${localExponent('0.3')}</sup>`
-    : `U(x₁ = ${format(fixed(), 1)}, x₂) = ${format(fixed(), 1)}<sup>${localExponent('0.7')}</sup> · x₂<sup>${localExponent('0.3')}</sup>`;
+    ? `U(x₁, x₂ = ${format(fixed(), 1)}) = x₁<sup>${localExponent(ALPHA)}</sup> · ${format(fixed(), 1)}<sup>${localExponent(BETA)}</sup>`
+    : `U(x₁ = ${format(fixed(), 1)}, x₂) = ${format(fixed(), 1)}<sup>${localExponent(ALPHA)}</sup> · x₂<sup>${localExponent(BETA)}</sup>`;
   const xyAxis = title => ({ title: { text: title, font: { size: 12 } }, range: [0, 10], dtick: 2, gridcolor: '#e7e7e7', zerolinecolor: '#bbbbbb', fixedrange: true, tickfont: { size: 11 } });
   const baseLayout = () => ({ margin: { l: 55, r: 25, b: 55, t: 25 }, paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', showlegend: false, font: { family: 'Segoe UI, Arial, sans-serif', color: grey }, separators: locale() === 'de' ? ',.' : '.,', xaxis: xyAxis(t(variable() === 1 ? 'good1' : 'good2')), yaxis: xyAxis(t('utility')) });
   function curveTrace(color = red) {
@@ -71,10 +72,17 @@ export function createMarginalSimulation({ t, locale, showError }) {
     $('mu-limit-heading').textContent = t(tangent ? 'muReached' : 'muApproaching');
     $('mu-limit-text').textContent = tangent ? t('muReachedText').replace('{slope}', format(s.derivative)) : t('muApproachingText');
     $('mu-limit-box').classList.toggle('reached', tangent);
-    const exp = localExponent(exponent()), neg = localExponent(variable() === 1 ? '-0.3' : '-0.7');
-    const otherExp = localExponent(variable() === 1 ? '0.3' : '0.7');
-    $('mu-derivative-formula').innerHTML = `MU${variable() === 1 ? '₁' : '₂'} = ∂U/∂${symbol()} = ${exp} · ${symbol()}<sup>${neg}</sup> · ${other()}<sup>${otherExp}</sup> = ${format(s.derivative)}`;
-    const lineX = [Math.max(0, s.a - 1.8), Math.min(10, Math.max(s.a + 2.3, s.b + .5))];
+    const exp = localExponent(exponent()), neg = localExponent(exponent() - 1);
+    const otherExp = localExponent(otherExponent());
+    const subscript = variable() === 1 ? '₁' : '₂';
+    $('mu-derivative-formula').innerHTML = `MU${subscript} = ∂U/∂${symbol()} = ${exp} · ${symbol()}<sup>${neg}</sup> · ${other()}<sup>${otherExp}</sup>`;
+    const x1 = format(variable() === 1 ? s.a : fixed(), 1);
+    const x2 = format(variable() === 1 ? fixed() : s.a, 1);
+    const point = format(s.a, 1), constant = format(fixed(), 1);
+    const separator = locale() === 'de' ? '; ' : ', ';
+    $('mu-derivative-substitution').innerHTML = `MU${subscript}(x₁ = ${x1}${separator}x₂ = ${x2}) = ${exp} · ${point}<sup>${neg}</sup> · ${constant}<sup>${otherExp}</sup> ≈ <strong>${format(s.derivative)}</strong>`;
+    const plotRange = slopePlotRange(variable(), s.a, fixed());
+    const lineX = plotRange.x;
     const traces = [curveTrace(blue),
       { type: 'scatter', mode: 'lines', x: lineX, y: lineX.map(x => s.ua + s.derivative * (x - s.a)), line: { color: tangent ? red : grey, width: tangent ? 3 : 2, dash: tangent ? 'solid' : 'dash' }, hoverinfo: 'skip' },
       { type: 'scatter', mode: 'lines', x: tangent ? [] : lineX, y: tangent ? [] : lineX.map(x => s.ua + s.secant * (x - s.a)), line: { color: red, width: 3 }, hoverinfo: 'skip' },
@@ -85,7 +93,14 @@ export function createMarginalSimulation({ t, locale, showError }) {
       { x: (s.a + s.b) / 2, y: s.ua, text: `Δ${symbol()} = ${format(s.gap, 2)}`, yshift: -22, showarrow: false, font: { size: 11, color: grey }, bgcolor: '#ffffff' },
       { x: s.b, y: (s.ua + s.ub) / 2, text: `ΔU = ${format(s.rise)}`, xanchor: 'left', xshift: 12, showarrow: false, font: { size: 11, color: grey }, bgcolor: '#ffffff' }
     ];
-    await Plotly.react('mu-slope-plot', traces, { ...baseLayout(), width: $('mu-slope-plot').clientWidth, margin: { l: 55, r: window.innerWidth < 760 ? 25 : 100, t: 30, b: 60 }, annotations }, config);
+    const layout = baseLayout();
+    await Plotly.react('mu-slope-plot', traces, {
+      ...layout,
+      xaxis: { ...layout.xaxis, range: plotRange.x, dtick: undefined, nticks: 6 },
+      yaxis: { ...layout.yaxis, range: plotRange.y, dtick: undefined, nticks: 6 },
+      width: $('mu-slope-plot').clientWidth,
+      margin: { l: 55, r: window.innerWidth < 760 ? 25 : 100, t: 30, b: 60 }, annotations
+    }, config);
   }
   async function render() {
     pending = true;

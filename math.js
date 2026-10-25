@@ -1,6 +1,6 @@
 export const MAX_QUANTITY = 10;
-export const ALPHA = 0.7;
-export const BETA = 0.3;
+export const ALPHA = 0.4;
+export const BETA = 0.6;
 
 export function utility(x1, x2) {
   return x1 ** ALPHA * x2 ** BETA;

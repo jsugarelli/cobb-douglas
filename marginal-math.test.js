@@ -1,7 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { utility } from './math.js';
-import { sectionUtility, marginalUtility, slopeValues } from './marginal-math.js';
+import { sectionUtility, marginalUtility, slopeValues, slopePlotRange } from './marginal-math.js';
+
+test('0.4 and 0.6 exponents give the expected utility and partial derivatives', () => {
+  assert.ok(Math.abs(utility(1, 32) - 8) < 1e-12);
+  assert.ok(Math.abs(marginalUtility(1, 1, 32) - 3.2) < 1e-12);
+  assert.ok(Math.abs(marginalUtility(2, 32, 1) - .15) < 1e-12);
+});
+
+test('enlarged slope view contains both points and tangent without rescaling as the gap changes', () => {
+  for (const variable of [1, 2]) for (const fixed of [.5, 5, 9.5]) for (const a of [.5, 3, 7]) {
+    const range = slopePlotRange(variable, a, fixed);
+    assert.ok(range.x[1] - range.x[0] < 5);
+    assert.ok(range.y[1] > range.y[0]);
+    for (const gap of [0, .01, 1, 3]) {
+      const s = slopeValues(variable, a, gap, fixed);
+      assert.ok(s.a >= range.x[0] && s.b <= range.x[1]);
+      assert.ok(s.ua >= range.y[0] && s.ub <= range.y[1]);
+    }
+    const ua = sectionUtility(variable, a, fixed);
+    for (const x of range.x) {
+      const tangentY = ua + marginalUtility(variable, a, fixed) * (x - a);
+      assert.ok(tangentY >= range.y[0] && tangentY <= range.y[1]);
+    }
+  }
+});
 
 test('both vertical slices retain the original quantities and utility', () => {
   for (const variable of [1, 2]) for (const fixed of [.5, 5, 9.5]) {
