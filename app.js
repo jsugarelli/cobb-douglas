@@ -1,5 +1,6 @@
 import { utility, indifferenceCurve, MAX_QUANTITY } from './math.js';
 import { levelCamera, rotateCamera } from './camera.js';
+import { createMarginalSimulation } from './marginal.js';
 
 const $ = id => document.getElementById(id);
 const slider = $('utility-level');
@@ -10,6 +11,7 @@ const initialCamera = { eye: { x: 1.65, y: 1.85, z: 1.2 }, center: { x: 0, y: 0,
 const config = { responsive: true, displayModeBar: false, scrollZoom: true, showTips: false };
 let dictionary, lang = 'de', ready = false;
 let rendering = false, pending = false;
+let marginalSimulation;
 const t = key => dictionary[lang][key] ?? dictionary.de[key] ?? key;
 const number = value => new Intl.NumberFormat(lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value);
 const cloneCamera = () => structuredClone(initialCamera);
@@ -87,8 +89,10 @@ async function setLanguage(value) {
   lang = value;
   languageSelect.value = lang;
   document.documentElement.lang = lang;
-  document.title = t('pageTitle');
+  document.title = t($('simulation').value === 'marginal' ? 'simulationMarginal' : 'pageTitle');
   document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = t(element.dataset.i18n); });
+  $('simulation-title').textContent = t($('simulation').value === 'marginal' ? 'simulationMarginal' : 'title');
+  if (marginalSimulation) await marginalSimulation.translate();
   languageSelect.setAttribute('aria-label', t('language'));
   document.querySelectorAll('[data-i18n-label]').forEach(element => {
     element.setAttribute('aria-label', t(element.dataset.i18nLabel));
@@ -135,6 +139,19 @@ async function init() {
     Plotly.newPlot('projection-plot', [projectionTrace(Number(slider.value))], projectionLayout(), { ...config, scrollZoom: false, staticPlot: false })
   ]);
   ready = true;
+  marginalSimulation = createMarginalSimulation({ t, locale: () => lang, showError });
+  async function selectSimulation() {
+    const isMarginal = $('simulation').value === 'marginal';
+    $('indifference-view').hidden = isMarginal;
+    $('marginal-view').hidden = !isMarginal;
+    $('simulation-title').textContent = t(isMarginal ? 'simulationMarginal' : 'title');
+    document.title = `${t(isMarginal ? 'simulationMarginal' : 'simulationIndifference')} · ${t('eyebrow')}`;
+    history.replaceState(null, '', isMarginal ? '#marginal-utility' : '#indifference');
+    if (isMarginal) await marginalSimulation.show();
+    else { marginalSimulation.pause(); await Promise.all([Plotly.Plots.resize('surface-plot'), Plotly.Plots.resize('projection-plot')]); }
+  }
+  $('simulation').addEventListener('change', () => selectSimulation().catch(showError));
+  if (location.hash === '#marginal-utility') { $('simulation').value = 'marginal'; await selectSimulation(); }
   slider.disabled = false;
   transparency.disabled = false;
   document.querySelectorAll('.camera-controls button').forEach(button => { button.disabled = false; });
