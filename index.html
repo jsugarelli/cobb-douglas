@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#DA002A">
+  <title>Cobb-Douglas · Nutzen & Indifferenz</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/plotly-gl3d-3.1.0.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <label class="language"><span data-i18n="language">Sprache</span><select id="language" aria-label="Sprache / Language"><option value="de">Deutsch</option><option value="en">English</option></select></label>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow" data-i18n="eyebrow">MIKROÖKONOMIK · HAUSHALTSTHEORIE</p>
+      <h1 data-i18n="title">Vom Nutzen zur Indifferenzkurve.</h1>
+    </section>
+    <section class="workspace" aria-label="Simulation">
+      <div class="main-panel">
+        <div class="panel-heading"><div><p class="eyebrow" data-i18n="surfaceKicker">01 / DIE NUTZENFLÄCHE</p><h2>U(x₁, x₂) = x₁⁰·⁷ · x₂⁰·³</h2></div></div>
+        <div class="camera-controls">
+          <button id="rotate-left" class="subtle arrow" data-i18n-label="rotateLeft" aria-label="Nach links drehen">←</button>
+          <button id="level-view" class="subtle" data-i18n="levelView">Waagerecht ausrichten</button>
+          <button id="rotate-right" class="subtle arrow" data-i18n-label="rotateRight" aria-label="Nach rechts drehen">→</button>
+          <button id="reset-view" class="subtle reset" data-i18n="reset">Ansicht zurücksetzen</button>
+        </div>
+        <div id="surface-plot" role="img" aria-label="3D-Nutzenfläche"></div>
+        <p class="plot-hint" data-i18n="hint">Ziehen zum Drehen · Scrollen zum Zoomen</p>
+        <div class="legend"><span><i class="swatch surface"></i><span data-i18n="legendSurface">Nutzenfläche</span></span><span><i class="swatch cut"></i><span data-i18n="legendCut">Schnittkurve bei U = ū</span></span><span><i class="swatch projection"></i><span data-i18n="legendProjection">Projektion auf U = 0</span></span></div>
+      </div>
+      <aside class="side-panel">
+        <section class="control-section"><p class="eyebrow" data-i18n="levelKicker">02 / DAS NUTZENNIVEAU</p><div class="level-heading"><label for="utility-level" data-i18n="level">Schnitthöhe ū</label><output for="utility-level" id="level-value">4,0</output></div><input id="utility-level" type="range" min="0.5" max="8" step="0.1" value="4" aria-describedby="level-help"><div class="range-labels"><span id="min-value">0,5</span><span id="max-value">8,0</span></div><p id="level-help" data-i18n="levelHelp">Verschiebe die Ebene. Die rote Schnittkurve verbindet alle Güterbündel mit diesem Nutzen.</p>
+          <div class="transparency-control">
+            <div class="level-heading"><label for="transparency" data-i18n="transparency">Transparenz der Nutzenfläche</label><output for="transparency" id="transparency-value">20 %</output></div>
+            <input id="transparency" type="range" min="0" max="100" step="1" value="20">
+            <div class="range-labels"><span data-i18n="opaque">Deckend</span><span data-i18n="transparent">Transparent</span></div>
+          </div>
+        </section>
+        <section class="projection-section"><p class="eyebrow" data-i18n="projectionKicker">03 / DIE INDIFFERENZKURVE</p><h2 data-i18n="projectionTitle">Der Blick auf die Güterebene</h2><div id="projection-plot" role="img" aria-label="Indifferenzkurve in der Güterebene"></div><p class="formula">x₂ = (ū / x₁⁰·⁷)<sup>1 / 0,3</sup></p><p data-i18n="projectionHelp">Die Projektion übernimmt x₁ und x₂ aus der Schnittkurve; nur die Höhe wird null.</p></section>
+      </aside>
+    </section>
+    <section class="insight" aria-live="polite"><span class="insight-icon" aria-hidden="true">↳</span><div><h2 data-i18n="insightTitle">Gleicher Nutzen. Unterschiedliche Güterbündel.</h2><p id="insight-text"></p></div></section>
+    <footer><span data-i18n="footer">Tourismusökonomie 1 · Grundlagen der Volkswirtschaftslehre</span><span data-i18n="domainNote">Gezeigter Ausschnitt: 0 ≤ x₁, x₂ ≤ 10. Die Kurven setzen sich außerhalb fort.</span></footer>
+    <p id="error" class="error" role="alert" hidden></p>
+  </main>
+</body>
+</html>
