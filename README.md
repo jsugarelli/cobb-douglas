@@ -1,5 +1,9 @@
 # Cobb-Douglas: Nutzenfläche und Indifferenzkurve
 
+**Öffentliche Simulation:** https://jsugarelli.github.io/cobb-douglas/
+
+Veröffentlicht mit GitHub Pages aus `main` / `/ (root)`. Änderungen werden nach Commit und Push auf `main` automatisch veröffentlicht.
+
 Interaktive, statische Lehranwendung für Tourismusökonomie 1. Keine Installation von npm-Paketen, kein Backend, keine Benutzerkonten. Berechnung und Grafik laufen im Browser. Plotly ist lokal mitgeliefert; im Betrieb werden keine Bibliotheken von Drittservern geladen.
 
 ## Lokal starten
